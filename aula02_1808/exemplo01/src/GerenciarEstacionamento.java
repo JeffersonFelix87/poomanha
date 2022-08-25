@@ -8,18 +8,19 @@ public class GerenciarEstacionamento {
     public static void main(String[] args) {
         Carro carro1, carro2;
         carro1 = new Carro();
-        carro1.idCarro = 1;
-        carro1.marca = "Fiat";
-        carro1.modelo = "Palio";
-        carro1.anoFab = 2011;
-        carro1.valor = 10000.00;
+
+        carro1.setIdCarro(1);
+        carro1.setMarca("Fiat");
+        carro1.setModelo("Palio");
+        carro1.setAnoFab(2011);
+        carro1.setValor(5000.0f);
 
         carro2 = new Carro();
-        carro2.idCarro = 2;
-        carro2.marca = "VW";
-        carro2.modelo = "Fusca";
-        carro2.anoFab = 1969;
-        carro2.valor = 5000.00;
+        carro2.setIdCarro(2);
+        carro2.setMarca("VW");
+        carro2.setModelo("Fu");
+        carro2.setAnoFab(1969);
+        carro2.setValor(5000.00);
         GerenciarEstacionamento ge = new GerenciarEstacionamento();
         ge.lista.add(carro1);
         ge.lista.add(carro2);
