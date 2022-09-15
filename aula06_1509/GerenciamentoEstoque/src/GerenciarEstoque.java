@@ -78,6 +78,7 @@ public class GerenciarEstoque {
                 if(ok){
                     System.out.println("Entrada efetuada com sucesso");
                 }else{
+
                     System.out.println("Valor invalido para entrada");
                 }
                 return;
@@ -86,15 +87,48 @@ public class GerenciarEstoque {
         System.out.println("Produto nao encontrado ");
     }
     public void saidaDeProduto(Scanner scanner){
+        System.out.println("Digite o codigo do produto a dar saida: ");
+        int codigo = Integer.parseInt(scanner.nextLine());
+        //varrer a lista a procura do produto
+        for(Produto p: produtos){
+            if(codigo == p.getIdProd()){
+                System.out.println("Digite a quantidade de saida: ");
+                int saida = Integer.parseInt(scanner.nextLine());
+                boolean ok = p.registrarSaida(saida);
+                if(ok){
+                    System.out.println("Saida efetuada com sucesso");
+                }else{
 
+                    System.out.println("Quantidade indisponivel");
+                }
+                return;
+            }
+        }
+        System.out.println("Produto nao encontrado ");
     }
     public void listarTodosProdutos(){
-
+        for(Produto p: produtos){
+            System.out.println(p.toString());
+        }
     }
     public void exibirSaldoDeProduto(Scanner scanner){
-
+        System.out.println("Digite o codigo do produto a exibir o saldo: ");
+        int codigo = Integer.parseInt(scanner.nextLine());
+        //varrer a lista para exibir o saldo
+        for(Produto p : produtos){
+            if(p.getIdProd()==codigo) {
+                System.out.println("Saldo do Produto: " + p.getNome() +
+                        " = " + p.getQuantidade());
+                return;
+            }
+        }
+        System.out.println("Produto nao encontrado");
     }
     public void apresentarPatrimonioInventariado(){
-
+        double total = 0.0;
+        for (Produto p : produtos){
+            total+= p.getQuantidade() * p.getValorUnitario();
+        }
+        System.out.printf("Total Patrimonio R$ %.2f \n", total);
     }
 }
