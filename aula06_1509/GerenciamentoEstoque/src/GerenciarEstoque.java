@@ -9,9 +9,9 @@ public class GerenciarEstoque {
         Scanner scanner = new Scanner(System.in);
         GerenciarEstoque ge = new GerenciarEstoque();
         int opcao = 0;
-        do{
+        do {
             opcao = getMenuPrincipal(scanner, ge);
-        }while(opcao!=9);
+        } while (opcao != 9);
     }
 
     private static int getMenuPrincipal(Scanner scanner, GerenciarEstoque ge) {
@@ -27,7 +27,7 @@ public class GerenciarEstoque {
         System.out.println("9. Sair");
         System.out.println("Escolha sua opcao: ");
         opcao = Integer.parseInt(scanner.nextLine());
-        switch (opcao){
+        switch (opcao) {
             case 1:
                 ge.cadastrarNovoProduto(scanner);
                 break;
@@ -55,7 +55,7 @@ public class GerenciarEstoque {
         return opcao;
     }
 
-    public void cadastrarNovoProduto(Scanner scanner){
+    public void cadastrarNovoProduto(Scanner scanner) {
         Produto produto = new Produto();
         System.out.println("Digite o codigo do produto");
         produto.setIdProd(Integer.parseInt(scanner.nextLine()));
@@ -66,68 +66,78 @@ public class GerenciarEstoque {
         System.out.println("Produto cadastrado com sucesso");
         produtos.add(produto);
     }
-    public void entradaDeProduto(Scanner scanner){
+
+    public void entradaDeProduto(Scanner scanner) {
         System.out.println("Digite o codigo do produto a dar entrada: ");
         int codigo = Integer.parseInt(scanner.nextLine());
         //varrer a lista a procura do produto
-        for(Produto p: produtos){
-            if(codigo == p.getIdProd()){
-                System.out.println("Digite a quantidade de entrada: ");
-                int entrada = Integer.parseInt(scanner.nextLine());
-                boolean ok = p.registrarEntrada(entrada);
-                if(ok){
-                    System.out.println("Entrada efetuada com sucesso");
-                }else{
-
-                    System.out.println("Valor invalido para entrada");
-                }
-                return;
+        Produto produtoEncontrado = null;
+        produtoEncontrado = procurarNaLista(codigo);
+        if (produtoEncontrado != null) {
+            System.out.println("Digite a quantidade de entrada: ");
+            int entrada = Integer.parseInt(scanner.nextLine());
+            boolean ok = produtoEncontrado.registrarEntrada(entrada);
+            if (ok) {
+                System.out.println("Entrada efetuada com sucesso");
+            } else {
+                System.out.println("Valor invalido para entrada");
             }
+            return;
+        } else {
+            System.out.println("Produto nao encontrado ");
         }
-        System.out.println("Produto nao encontrado ");
     }
-    public void saidaDeProduto(Scanner scanner){
+
+
+    private Produto procurarNaLista(int codigo) {
+        for (Produto p : produtos) {
+            if (codigo == p.getIdProd()) return p;
+        }
+        return null;
+    }
+
+    public void saidaDeProduto(Scanner scanner) {
         System.out.println("Digite o codigo do produto a dar saida: ");
         int codigo = Integer.parseInt(scanner.nextLine());
-        //varrer a lista a procura do produto
-        for(Produto p: produtos){
-            if(codigo == p.getIdProd()){
-                System.out.println("Digite a quantidade de saida: ");
-                int saida = Integer.parseInt(scanner.nextLine());
-                boolean ok = p.registrarSaida(saida);
-                if(ok){
-                    System.out.println("Saida efetuada com sucesso");
-                }else{
+        Produto produtoEncontrado = procurarNaLista(codigo);
+        if (produtoEncontrado != null) {
+            System.out.println("Digite a quantidade de saida: ");
+            int saida = Integer.parseInt(scanner.nextLine());
+            boolean ok = produtoEncontrado.registrarSaida(saida);
+            if (ok) {
+                System.out.println("Saida efetuada com sucesso");
+            } else {
 
-                    System.out.println("Quantidade indisponivel");
-                }
-                return;
+                System.out.println("Quantidade indisponivel");
             }
+        } else {
+            System.out.println("Produto nao encontrado ");
         }
-        System.out.println("Produto nao encontrado ");
     }
-    public void listarTodosProdutos(){
-        for(Produto p: produtos){
+
+    public void listarTodosProdutos() {
+        for (Produto p : produtos) {
             System.out.println(p.toString());
         }
     }
-    public void exibirSaldoDeProduto(Scanner scanner){
+
+    public void exibirSaldoDeProduto(Scanner scanner) {
         System.out.println("Digite o codigo do produto a exibir o saldo: ");
         int codigo = Integer.parseInt(scanner.nextLine());
-        //varrer a lista para exibir o saldo
-        for(Produto p : produtos){
-            if(p.getIdProd()==codigo) {
-                System.out.println("Saldo do Produto: " + p.getNome() +
-                        " = " + p.getQuantidade());
-                return;
-            }
+        Produto produtoEncontrado = procurarNaLista(codigo);
+        if (produtoEncontrado != null) {
+            System.out.println("Saldo do Produto: " +
+                    produtoEncontrado.getNome() +
+                    " = " + produtoEncontrado.getQuantidade());
+        } else {
+            System.out.println("Produto nao encontrado");
         }
-        System.out.println("Produto nao encontrado");
     }
-    public void apresentarPatrimonioInventariado(){
+
+    public void apresentarPatrimonioInventariado() {
         double total = 0.0;
-        for (Produto p : produtos){
-            total+= p.getQuantidade() * p.getValorUnitario();
+        for (Produto p : produtos) {
+            total += p.getQuantidade() * p.getValorUnitario();
         }
         System.out.printf("Total Patrimonio R$ %.2f \n", total);
     }
